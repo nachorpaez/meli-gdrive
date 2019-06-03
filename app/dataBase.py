@@ -28,9 +28,11 @@ def listKeys2():
 def insertFiles(id, key, value):
     r.hset(id,key,value)
 
+#Insert file in Public database
 def insertFilesPublic(id,value):
     r2.set(id,value)
-    
+
+#Insert changes on databse
 def insertChanges(id, key, value):
     r.hset(id,key,value)
 
@@ -40,4 +42,4 @@ def getValue2(key):
 # keys = listKeys2()
 # for k in keys:
 #       print(getValue2(k))
-listAll()
+# listAll()

@@ -4,35 +4,39 @@ import dataBase
 import time
 import redis
 
+#Function checks if file is Shared, if it is it calles the deletePermissions function, else it inserts the file in the db
 def checkPublicFiles(fileList):
     length = len(fileList["files"])
     for i in range(length):
         id = fileList["files"][i]["id"]
         owner = fileList["files"][i]["owners"]
         fileName = fileList["files"][i]["name"]
-        if (fileList["files"][i]["shared"] == "True"): #Si el archivo es Publico procedo a borar los permisos que tiene el archivo
+        if (fileList["files"][i]["shared"] == "True"):
             deletePermissions(id, owner, fileName)
         else:
             for j in fileList["files"][i]:
                 if (j !="id"):
-                    dataBase.insertFiles(id,j, fileList["files"][i][j]) #Itero por el dict e inserto por id en la base de redis
+                    dataBase.insertFiles(id,j, fileList["files"][i][j])
 
+#Function checks if the file was removed, else it checks if the file is shared. In that case it calles the delete permissions
+#function. Else it inserts the file in the db
 def checkPublicChanges(changesList):
     length = len(changesList["changes"])
     for i in range(length):
         if changesList["changes"][i]["removed"]:
             dataBase.deleteFile(changesList["changes"][i]["fileId"])
         else:
+            #Since the changesList only has the file Id, I need to get the file metadata
             fileMetadata = apiDrive.getFileMetadata(changesList["changes"][i]["fileId"])
             fileMetadata["owners"] = fileMetadata["owners"][0]["emailAddress"]
+            #Convert name of file type
             fileMetadata["mimeType"] = apiDrive.f(fileMetadata["mimeType"])
             fileMetadata["shared"] = str(fileMetadata["shared"])
             id = fileMetadata["id"]
             owner = fileMetadata["owners"]
             fileName = fileMetadata["name"]
-            if fileMetadata["shared"] == "True": #Si es Public
+            if fileMetadata["shared"] == "True": #If it is Shared
                 deletePermissions(id, owner, fileName)
-
             else:
                 for j in fileMetadata:
                     if (j !="id"):
@@ -42,6 +46,7 @@ def checkPublicChanges(changesList):
                             print("No fue posible conectarse con la base de datos. Favor revisar que el contenedor de Redis este corriendo")
                             exit()
 
+#With the file id the function deletes all the permissions of the file.
 def deletePermissions(id, owner, fileName):
     # File is shared so I get the permissions list
     permissionsList = apiDrive.listPermissions(id)
@@ -56,6 +61,7 @@ def deletePermissions(id, owner, fileName):
                 print("No fue posible conectarse con la base de datos. Favor revisar que el contenedor de Redis este corriendo")
                 exit()
 
+#To mantain the token through the app restart I need to save it to a file
 def savePageToken(pToken):
     TOKENS = 'start_page_token.txt'
     token_file = open(TOKENS,'w')
@@ -73,24 +79,25 @@ if __name__ == '__main__':
     pToken = None
 
     try:
-        if not dataBase.listKeys(): #Si no hay keys en la base significa que arranco la app por primera vez entonces me traigo todos los files.
+        #If there are no keys on the database it means there are no changes to check so I get all files
+        if not dataBase.listKeys():
             fileList = apiDrive.getFileList()
             checkPublicFiles(fileList)
-            pToken = apiDrive.getStartPageToken() #Pido el primer token para quedar en cero los cambios.
+            pToken = apiDrive.getStartPageToken()
             savePageToken(pToken)
     except redis.exceptions.ConnectionError:
         print("No fue posible conectarse con la base de datos. Favor revisar que el contenedor de Redis este corriendo")
         exit()
 
     if pToken == None:
-        #pToken no tiene valor, por lo tanto tomo el ultimo guardado en archivo
+        #Token has no value so I get the last saved one
         pToken = getPageToken()  
 
     while(not time.sleep(5)): 
-    #     #Pido traer la lista de cambios con el token mas actual que tengo
+        #Get the list of changes more recent
         tuple = apiDrive.getChangesList(pToken)
 
-        #La funcion me devuelve el nuevo token que esta sin cambios pendientes y la lista de cambios que hubo
+        #Function returns the list of changes and the next token
         pToken = tuple[1]
         savePageToken(str(pToken))
         changesList = tuple[0]

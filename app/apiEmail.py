@@ -1,5 +1,6 @@
 import yagmail
 
+#Register mail with the mail credentials
 yag = yagmail.SMTP("melichallenge.ar@gmail.com", oauth2_file="./email/email_credentials.json")
 
 def sendEmail(owner, filename):
