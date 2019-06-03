@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+
+  # db2:
+  #   image: mysql
+  #   hostname: db2
+  #   container_name: mysql
+  #   restart: always
+  #   expose:
+  #     - "3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: example
+
+  db:
+    image: redis
+    hostname: db
+    container_name: redis
+    restart: always
+    expose:
+      - "6379"
+
+  app:
+    build: .
+    image: drive-app
+    container_name: app
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+    volumes:
+      - "/Users/nacho/Code/meli-gdrive/app/:/app"
+    # network_mode: "host"
