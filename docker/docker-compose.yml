@@ -23,7 +23,7 @@ services:
     tty: true
     restart: always
     volumes:
-      - tokens:/app/start_page_token.txt
+      - tokens:/app/tokens/
     depends_on:
       - db
 

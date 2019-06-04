@@ -10,7 +10,7 @@ from apiclient.discovery import build
 client_id = '652188502680-b2700vc4mh31obhh2aiasg73q8kaq5jv.apps.googleusercontent.com'
 client_secret = 'Efq3lxNI0CyPCfnyvcwneWC8'
 
-# The scope URL for read/write access to a user's calendar data
+# The scope URL for read/write access to a user's drive data
 scope = 'https://www.googleapis.com/auth/drive'
 
 # Create a flow object. This object holds the client_id, client_secret, and
@@ -54,6 +54,7 @@ http = credentials.authorize(http)
 #   authorized httplib2.Http() object that can be used for API calls
 service = build('drive', 'v3', http=http)
 
+#Function to convert mimeType strings
 def f(x):
         return{
           "application/vnd.google-apps.spreadsheet":"Google Spreadsheet",
@@ -68,17 +69,18 @@ def f(x):
 
         }.get(x,x)
 
+#Get list of files in the user Drive
 def getFileList():
   request = service.files().list(
       corpora="user",
       fields="files(id,name,mimeType,owners(emailAddress),shared,modifiedTime)"
     )
   response = request.execute()
-  #Al ser un solo owner remuevo el array de owners y dejo solo el valor del mail
   length = len(response["files"])
   for i in range(length):
       response["files"][i]["owners"] = response["files"][i]["owners"][0]["emailAddress"]
       response["files"][i]["mimeType"] = f(response["files"][i]["mimeType"])
+      #Boolean shared is transformed to string in order to insert it in Redis DB
       response["files"][i]["shared"] = str(response["files"][i]["shared"])
   return response
 
@@ -87,8 +89,8 @@ def getFileMetadata(fileId):
   response = request.execute()
   return response
 
+#Get the list of changes since the last start page token requested
 def getChangesList(pToken):
-  #Aca pido el list de los ultimos changes
   request = service.changes().list(pageToken=pToken,restrictToMyDrive=True,fields="newStartPageToken,changes(removed,fileId)")
   response = request.execute()
   if "newStartPageToken" in response:

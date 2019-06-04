@@ -63,13 +63,13 @@ def deletePermissions(id, owner, fileName):
 
 #To mantain the token through the app restart I need to save it to a file
 def savePageToken(pToken):
-    TOKENS = 'start_page_token.txt'
+    TOKENS = "/app/tokens/start_page_token.txt"
     token_file = open(TOKENS,'w')
     token_file.write(pToken)
     token_file.close()
 
 def getPageToken():
-    TOKENS = 'start_page_token.txt'
+    TOKENS = "/app/tokens/start_page_token.txt"
     token_file = open(TOKENS)
     pToken = token_file.read()
     token_file.close()
