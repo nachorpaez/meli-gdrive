@@ -14,7 +14,7 @@ Instrucctions:
     "google_client_secret": "<Client Secret>",
     "google_refresh_token": ""
     }
-  In order to get the ID and Secret please refer to this link: 
+  If you don't have one, please refer to this link: 
   https://www.iperiusbackup.net/en/how-to-enable-google-drive-api-and-get-client-credentials/
   
   3. Go to /docker directory
