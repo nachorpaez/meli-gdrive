@@ -104,7 +104,7 @@ venv.bak/
 .mypy_cache/
 /tests/
 credentials.dat
-/app/.vscode
+.vscode/
 /app/start_page_token.txt
 .DS_Store
 /app/credentials.json
