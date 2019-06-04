@@ -3,7 +3,7 @@ import argparse
 # from tabulate import tabulate
 
 parser = argparse.ArgumentParser("queryDatabase")
-parser.add_argument("database", help="Select the database", type=str)
+parser.add_argument("database", help="Select the database [inventario | publico]", type=str)
 args = parser.parse_args()
 print(args.database)
 
