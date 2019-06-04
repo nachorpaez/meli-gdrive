@@ -1,5 +1,6 @@
 import redis
 import sys
+from tabulate import tabulate
 
 if len(sys.argv[1]) > 0:
     a = sys.argv[1]
@@ -14,9 +15,11 @@ if len(sys.argv[1]) > 0:
         #Print of actual inventory of files
         r = redis.Redis(host='db', port=6379, db=0)
         keys = r.keys()
+        # headers = ['Name', 'File Type', 'Owners', 'Modified Time', 'Shared']
         print("Name\t\tFile Type\tOwners\t\t\tModified Time\tShared")
         for k in keys:
             file = r.hgetall(k)
+            # print(tabulate(file.decode('utf-8'), headers=headers))
             print("{}\t\t{}\t{}\t\t\t{}\t{}".format(
              file['name'.encode('utf-8')].decode('utf-8'),
              file['mimeType'.encode('utf-8')].decode('utf-8'),

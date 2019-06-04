@@ -4,11 +4,13 @@ from oauth2client.file import Storage
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import OAuth2WebServerFlow
 from apiclient.discovery import build
+import json
 
 
-#POR AHORA ESTAN HARDCODEADOS VER SI LO PUEDO PONDER EN UN ARCHIVO CON PERMISOS RESTRICTIVOS
-client_id = '652188502680-b2700vc4mh31obhh2aiasg73q8kaq5jv.apps.googleusercontent.com'
-client_secret = 'Efq3lxNI0CyPCfnyvcwneWC8'
+with open("credentials.json", "r") as read_file:
+    data = json.load(read_file)
+    client_id = data["google_client_id"]
+    client_secret = data["google_client_secret"]
 
 # The scope URL for read/write access to a user's drive data
 scope = 'https://www.googleapis.com/auth/drive'

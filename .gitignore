@@ -107,4 +107,4 @@ credentials.dat
 .vscode
 /app/start_page_token.txt
 .DS_Store
-/app/email/email_credentials.json
+/app/credentials.json
