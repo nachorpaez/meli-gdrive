@@ -1,6 +1,5 @@
 import redis
 import argparse
-# from tabulate import tabulate
 
 parser = argparse.ArgumentParser("queryDatabase")
 parser.add_argument("database", help="Select the database [inventario | publico]", type=str)
@@ -19,11 +18,11 @@ elif args.database == "inventario":
     r = redis.Redis(host='db', port=6379, db=0)
     keys = r.keys()
     # headers = ['Name', 'File Type', 'Owners', 'Modified Time', 'Shared']
-    print("Name\t\tFile Type\tOwners\t\t\tModified Time\tShared")
+    print("Name\t\t\tFile Type\t\tOwners\t\t\t\t\tModified Time\t\t\tShared")
     for k in keys:
         file = r.hgetall(k)
         # print(tabulate(file.decode('utf-8'), headers=headers))
-        print("{}\t\t{}\t{}\t\t\t{}\t{}".format(
+        print("{}\t{}\t\t{}\t\t{}\t{}".format(
          file['name'.encode('utf-8')].decode('utf-8'),
          file['mimeType'.encode('utf-8')].decode('utf-8'),
          file['owners'.encode('utf-8')].decode('utf-8'),
