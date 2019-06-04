@@ -31,5 +31,5 @@ Instrucctions:
   10. Run docker exec -d app python main.py
   
 In order to view the Data Base run: 
-   - docker exec -it app python queryDatabase.py -inventario   (To view inventory of User Drive)
-   - docker exec -it app python queryDatabase.py -publico  (To view historical list of files)
+   - docker exec -it app python queryDatabase.py inventario   (To view inventory of User Drive)
+   - docker exec -it app python queryDatabase.py publico  (To view historical list of files)
