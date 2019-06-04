@@ -1,9 +1,8 @@
 # meli-gdrive
+Python app for logging Google Drive files in a Redis Data Base
+Also removes Public Files permissions and mantains a historic list of those files
 
-App para loguear inventario de archivos de Google Drive.
-Remueve permisos de archivos publicos y mantiene un historico de estos archivos.
-
-Para utilizar la app:
+Instrucctions:
 
   1. Clone Repository
   2. Go to /app directory and put the credentials.json file. This file contains the keys for using the Gmail and Google Drive        API
@@ -15,7 +14,7 @@ Para utilizar la app:
     "google_client_secret": "<Client Secret>",
     "google_refresh_token": ""
     }
-  In order to get the ID and Secret please refer to this link: 
+  If you don't have one, please refer to this link: 
   https://www.iperiusbackup.net/en/how-to-enable-google-drive-api-and-get-client-credentials/
   
   3. Go to /docker directory
