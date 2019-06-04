@@ -1,6 +1,6 @@
 import redis
 import sys
-from tabulate import tabulate
+# from tabulate import tabulate
 
 if len(sys.argv[1]) > 0:
     a = sys.argv[1]
