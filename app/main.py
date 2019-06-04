@@ -77,7 +77,7 @@ def getPageToken():
 
 if __name__ == '__main__':
     pToken = None
-
+    print("Script started")
     try:
         #If there are no keys on the database it means there are no changes to check so I get all files
         if not dataBase.listKeys():

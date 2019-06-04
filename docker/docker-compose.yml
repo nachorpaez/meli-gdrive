@@ -4,19 +4,29 @@ services:
 
   db:
     image: redis
+    command: ["redis-server", "--appendonly", "yes"]
     hostname: db
     container_name: redis
     restart: always
+    volumes:
+      - redis-data:/data 
     expose:
       - "6379"
 
   app:
-    build: .
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
     image: drive-app
     container_name: app
     stdin_open: true
     tty: true
+    restart: always
+    volumes:
+      - tokens:/app/start_page_token.txt
     depends_on:
       - db
-    volumes:
-      - "/Users/nacho/Code/meli-gdrive/app/:/app"
+
+volumes:
+  redis-data:
+  tokens:

@@ -38,8 +38,3 @@ def insertChanges(id, key, value):
 
 def getValue2(key):
     return r2.get(key).decode('utf-8')
-
-# keys = listKeys2()
-# for k in keys:
-#       print(getValue2(k))
-# listAll()
