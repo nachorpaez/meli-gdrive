@@ -1,5 +1,5 @@
 # meli-gdrive
-Python app for logging Google Drive files in a Redis Data Base.
+Pythonn app for logging Google Drive files in a Redis Data Base.
 Also removess Public Files permissions and mantains a historic list of those files
 
 Instrucctions:
