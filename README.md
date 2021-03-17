@@ -2,7 +2,7 @@
 Pythonn app for logging Google Drive files in a Redis Data Base.
 Also removess Public Files permissions and mantains a historic list of those files
 
-Instrucctions:
+Insstrucctions:
 
   1. Clone Repository
   2. Go to /app directory and put the credentials.json file. This file contains the keys for using the Gmail and Google Drive        API
